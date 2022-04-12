@@ -1,0 +1,283 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.2
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : 127.0.0.1:3306
+-- Généré le :  Dim 21 nov. 2021 à 12:14
+-- Version du serveur :  10.4.10-MariaDB
+-- Version de PHP :  7.3.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de données :  `lanaa`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `actualites`
+--
+
+DROP TABLE IF EXISTS `actualites`;
+CREATE TABLE IF NOT EXISTS `actualites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `description` text NOT NULL,
+  `image` varchar(250) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `actualites`
+--
+
+INSERT INTO `actualites` (`id`, `name`, `description`, `image`) VALUES
+(9, 'ujujuj', 'uujujujuj', '61755c7ea961d.jfif');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `admin`
+--
+
+DROP TABLE IF EXISTS `admin`;
+CREATE TABLE IF NOT EXISTS `admin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(250) NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `password` varchar(250) NOT NULL,
+  `tentative` int(11) NOT NULL DEFAULT 3,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `admin`
+--
+
+INSERT INTO `admin` (`id`, `email`, `name`, `password`, `tentative`) VALUES
+(1, 'a@a.a', 'momo', '$2y$10$EvC/Vi7oCmtHSwtvUtVfxej5DyrwfD9jaK8coLnZvwKE8NGpk9UEG', 3),
+(2, 'a@a.fr', 'a', '$2y$10$EvC/Vi7oCmtHSwtvUtVfxej5DyrwfD9jaK8coLnZvwKE8NGpk9UEG', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `adresse`
+--
+
+DROP TABLE IF EXISTS `adresse`;
+CREATE TABLE IF NOT EXISTS `adresse` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `adresse` varchar(250) NOT NULL,
+  `city` varchar(250) NOT NULL,
+  `codepostal` varchar(250) NOT NULL,
+  `phone` varchar(250) NOT NULL,
+  `id_users` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `adresse_users_AK` (`id_users`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `adresse`
+--
+
+INSERT INTO `adresse` (`id`, `name`, `adresse`, `city`, `codepostal`, `phone`, `id_users`) VALUES
+(5, 'Maison', '24 rue Julien perette', 'Pont-a-Mousson', '54700', '0665190433', 3),
+(8, 'travail', '1 rue Ernest sarloutte', 'Pont-à-Mousson', '54700', '0665190433', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `contrat`
+--
+
+DROP TABLE IF EXISTS `contrat`;
+CREATE TABLE IF NOT EXISTS `contrat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `contrat` varchar(250) NOT NULL,
+  `id_users` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_users` (`id_users`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `contrat`
+--
+
+INSERT INTO `contrat` (`id`, `name`, `contrat`, `id_users`) VALUES
+(4, '250', '61938af240038.pdf', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `factures`
+--
+
+DROP TABLE IF EXISTS `factures`;
+CREATE TABLE IF NOT EXISTS `factures` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `facture` varchar(250) NOT NULL,
+  `note` text DEFAULT NULL,
+  `id_users` int(11) NOT NULL,
+  `etat` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `id_users` (`id_users`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `factures`
+--
+
+INSERT INTO `factures` (`id`, `name`, `facture`, `note`, `id_users`, `etat`) VALUES
+(2, 'rr', 'rrr', 'rrr', 5, 2),
+(3, 'nouveau resultat', '61937b175fe51.pdf', 'sd', 2, 1),
+(4, 'Bg la facture ', '61937e3518a2e.pdf', 'bah je sais pas ', 2, 2),
+(5, 'ffvfv', '619a32ab3b5ae.pdf', 'vffvv', 2, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `rdv`
+--
+
+DROP TABLE IF EXISTS `rdv`;
+CREATE TABLE IF NOT EXISTS `rdv` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `motif` text NOT NULL,
+  `entreprise` varchar(250) NOT NULL,
+  `date` varchar(250) NOT NULL,
+  `statut` enum('Attente','accepter') NOT NULL DEFAULT 'Attente',
+  `id_users` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `rdv_users_FK` (`id_users`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `rdv`
+--
+
+INSERT INTO `rdv` (`id`, `motif`, `entreprise`, `date`, `statut`, `id_users`) VALUES
+(7, 'j\'ai ma piscine infecté de lezard', 'eurolux', '2021-10-29T08:06', 'accepter', 2),
+(8, 'yhyhyhyh', 'yhhyh', '2021-10-28T15:04', 'accepter', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `result`
+--
+
+DROP TABLE IF EXISTS `result`;
+CREATE TABLE IF NOT EXISTS `result` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `uploading` datetime NOT NULL DEFAULT current_timestamp(),
+  `pdf` varchar(250) NOT NULL,
+  `id_users` int(11) NOT NULL,
+  `note` text DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `result_users_FK` (`id_users`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `result`
+--
+
+INSERT INTO `result` (`id`, `name`, `uploading`, `pdf`, `id_users`, `note`) VALUES
+(10, 'pisvine infécté', '2021-10-24 15:07:00', '61755a7489c6a.pdf', 2, 'erferfe');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `company` varchar(250) NOT NULL,
+  `email` varchar(250) NOT NULL,
+  `password` varchar(250) NOT NULL,
+  `register` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `company`, `email`, `password`, `register`) VALUES
+(2, 'Nader', 'a', 'a@a.a', '$2y$10$5q35fI1fxkqjUsHioCjVXe1NjGr0.a2vcLM6fihFeiwgnJk/uTFEa', '2021-10-13 14:46:24'),
+(3, 'bb', 'saint gobain', 'bb@bb.bb', '$2y$10$8FcfNxecqnGRosT/i1kLKOrRdt36fS1/HzIRItL4IZJDU8IutdbKi', '2021-10-14 11:38:50'),
+(5, 'Nader', 'nader tour center', 'nader@gmail.com', '$2y$10$.KhixhNwZaYSpHH0NWrC/.hqIzujjkm6GOtn472GXV0U8NoQXj9Nm', '2021-10-20 11:07:53'),
+(6, 'zf', 'zz', 'ra@a.za', '$2y$10$GiHiHw4nD7nFL6Z3mwvQ1eRsEKdDnA0Mq2o3A7UA2qCHUfirPiIDC', '2021-10-31 10:39:53');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `video`
+--
+
+DROP TABLE IF EXISTS `video`;
+CREATE TABLE IF NOT EXISTS `video` (
+  `cle` varchar(50) NOT NULL,
+  `valeur` varchar(250) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `video`
+--
+
+INSERT INTO `video` (`cle`, `valeur`) VALUES
+('video', '619a0cf3e0ec1.mov');
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `adresse`
+--
+ALTER TABLE `adresse`
+  ADD CONSTRAINT `adresse_users_FK` FOREIGN KEY (`id_users`) REFERENCES `users` (`id`);
+
+--
+-- Contraintes pour la table `contrat`
+--
+ALTER TABLE `contrat`
+  ADD CONSTRAINT `contrat_ibfk_1` FOREIGN KEY (`id_users`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `factures`
+--
+ALTER TABLE `factures`
+  ADD CONSTRAINT `factures_ibfk_1` FOREIGN KEY (`id_users`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `rdv`
+--
+ALTER TABLE `rdv`
+  ADD CONSTRAINT `rdv_users_FK` FOREIGN KEY (`id_users`) REFERENCES `users` (`id`);
+
+--
+-- Contraintes pour la table `result`
+--
+ALTER TABLE `result`
+  ADD CONSTRAINT `result_users_FK` FOREIGN KEY (`id_users`) REFERENCES `users` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

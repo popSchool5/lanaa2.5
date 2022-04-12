@@ -1,0 +1,68 @@
+#------------------------------------------------------------
+#        Script MySQL.
+#------------------------------------------------------------
+
+
+#------------------------------------------------------------
+# Table: users
+#------------------------------------------------------------
+
+CREATE TABLE users(
+        id       Int  Auto_increment  NOT NULL ,
+        name     Varchar (250) NOT NULL ,
+        lastname Varchar (250) NOT NULL ,
+        company  Varchar (250) NOT NULL ,
+        email    Varchar (250) NOT NULL ,
+        password Varchar (250) NOT NULL ,
+        register Datetime NOT NULL
+	,CONSTRAINT users_PK PRIMARY KEY (id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: adresse
+#------------------------------------------------------------
+
+CREATE TABLE adresse(
+        id         Int  Auto_increment  NOT NULL ,
+        name       Varchar (250) NOT NULL ,
+        adresse    Varchar (250) NOT NULL ,
+        city       Varchar (250) NOT NULL ,
+        codepostal Varchar (250) NOT NULL ,
+        phone      Varchar (250) NOT NULL ,
+        id_users   Int NOT NULL
+	,CONSTRAINT adresse_PK PRIMARY KEY (id)
+
+	,CONSTRAINT adresse_users_FK FOREIGN KEY (id_users) REFERENCES users(id)
+	,CONSTRAINT adresse_users_AK UNIQUE (id_users)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: result
+#------------------------------------------------------------
+
+CREATE TABLE result(
+        id        Int  Auto_increment  NOT NULL ,
+        uploading Datetime NOT NULL ,
+        pdf       Varchar (250) NOT NULL ,
+        id_users  Int NOT NULL
+	,CONSTRAINT result_PK PRIMARY KEY (id)
+
+	,CONSTRAINT result_users_FK FOREIGN KEY (id_users) REFERENCES users(id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: rdv
+#------------------------------------------------------------
+
+CREATE TABLE rdv(
+        id       Int  Auto_increment  NOT NULL ,
+        date     Varchar (250) NOT NULL ,
+        id_users Int NOT NULL
+	,CONSTRAINT rdv_PK PRIMARY KEY (id)
+
+	,CONSTRAINT rdv_users_FK FOREIGN KEY (id_users) REFERENCES users(id)
+)ENGINE=InnoDB;
+
